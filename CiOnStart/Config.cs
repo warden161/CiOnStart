@@ -19,6 +19,9 @@ namespace CiOnStart
         /// <inheritdoc />
         public bool IsEnabled { get; set; } = true;
 
+        /// <inheritdoc />
+        public bool Debug { get; set; }
+
         /// <summary>
         /// Gets or sets the percentage chance that guards will spawn as chaos insurgents in a round.
         /// </summary>

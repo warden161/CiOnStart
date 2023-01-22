@@ -8,9 +8,10 @@
 namespace CiOnStart
 {
     using System.Collections.Generic;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using InventorySystem;
     using MonoMod.Utils;
+    using PlayerRoles;
     using Respawning;
 
     /// <summary>
@@ -19,7 +20,7 @@ namespace CiOnStart
     public class EventHandlers
     {
         private readonly Plugin plugin;
-        private readonly Queue<RoleType> spawnQueue = new Queue<RoleType>();
+        private readonly Queue<RoleTypeId> spawnQueue = new Queue<RoleTypeId>();
         private bool isChi;
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace CiOnStart
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (!isChi || ev.NewRole != RoleType.FacilityGuard)
+            if (!isChi || ev.NewRole != RoleTypeId.FacilityGuard)
                 return;
 
             ev.NewRole = spawnQueue.Dequeue();
@@ -51,7 +52,7 @@ namespace CiOnStart
             isChi = Exiled.Loader.Loader.Random.Next(100) < plugin.Config.CiChance;
             if (isChi)
             {
-                SpawnableTeamHandlerBase chaosSpawnHandler = RespawnWaveGenerator.SpawnableTeams[SpawnableTeamType.ChaosInsurgency];
+                SpawnableTeamHandlerBase chaosSpawnHandler = RespawnManager.SpawnableTeams[SpawnableTeamType.ChaosInsurgency];
                 chaosSpawnHandler.GenerateQueue(spawnQueue, chaosSpawnHandler.MaxWaveSize);
             }
         }
